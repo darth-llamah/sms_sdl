@@ -5,7 +5,6 @@
 #include "shared.h"
 
 
-
 #define SMSSDL_CORE_VER  VERSION
 #define SMSSDL_RELEASE   "7"
 #define SMSSDL_TITLE     "SMS Plus/SDL v" SMSSDL_CORE_VER "R" SMSSDL_RELEASE
@@ -91,7 +90,6 @@ typedef struct {
   Uint32 ticks_starting;
   SDL_sem* sem_sync;
 } t_sdl_sync;
-
 
 extern int sdlsms_init(const t_config*);
 extern void sdlsms_emulate();

@@ -31,6 +31,7 @@
 #include "bigfontwhite.h"
 #include "bigfontred.h"
 #include "font.h"
+#include "settingsdir.h"
 
 int selectpressed = 0,startpressed = 0;
 static int quit = 0;
@@ -60,7 +61,6 @@ static t_filterfunc filters[FILTER_NUM] = {
   filter_bilinear,
   filter_dotmatrix
 };
-
 static int readvolume()
 {
 	char *mixer_device = "/dev/mixer";
@@ -612,7 +612,9 @@ static int sdlsms_video_init(int frameskip, int afullscreen, int filter)
  // SDL_WM_SetCaption(SMSSDL_TITLE, NULL);
 
     startvolume = readvolume();
-    f = fopen("./sms_sdl.dat","rb");
+ const char *settingsFile = getSettingsFile("sms_sdl.dat");
+    f = settingsFile ? fopen(settingsFile, "rb") : NULL;
+    free(settingsFile);
     if(f)
     {
         fread(&fullscreen,sizeof(int),1,f);
@@ -730,7 +732,9 @@ static void sdlsms_video_close()
         setvolume(startvolume);
 	SDL_FreeSurface(sdl_video.surf_screen);
 	FILE *f;
-        f = fopen("./sms_sdl.dat","wb");
+const char *settingsFile = getSettingsFile("sms_sdl.dat");
+    f = settingsFile ? fopen(settingsFile, "wb") : NULL;
+    free(settingsFile);
         if(f)
         {
             fwrite(&fullscreen,sizeof(int),1,f);
@@ -740,6 +744,7 @@ static void sdlsms_video_close()
             fsync(f);
             fclose(f);
         }
+
   }
   if(sdl_video.surf_bitmap) SDL_FreeSurface(sdl_video.surf_bitmap);
  // if(sdl_video.surf_filter) SDL_FreeSurface(sdl_video.surf_filter);
