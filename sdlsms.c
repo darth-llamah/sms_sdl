@@ -495,6 +495,7 @@ else
 	SDL_BlitSurface(TmpScreen,NULL,sdl_video.surf_screen,NULL);
 	if(sdl_sync.sem_sync && sdl_video.frames_rendered % 3 == 0)
 		SDL_SemWait(sdl_sync.sem_sync);
+	SDL_Flip(sdl_video.surf_screen);
 	++sdl_video.frames_rendered;
     }
     if (currentselection == 7)
@@ -555,7 +556,7 @@ static void sdlsms_video_take_screenshot()
 static int sdlsms_video_init(int frameskip, int afullscreen, int filter)
 {
   int screen_width, screen_height;
-  Uint32 vidflags = SDL_HWSURFACE;
+  Uint32 vidflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
   FILE *f;
   int vol;
   screen_width  = (IS_GG) ? GG_SCREEN_WIDTH  : SMS_SCREEN_WIDTH;
@@ -702,6 +703,7 @@ static void sdlsms_video_finish_update()
                 time1 = SDL_GetTicks();
             }
         } 
+	SDL_Flip(sdl_video.surf_screen);
  // }
 }
 
