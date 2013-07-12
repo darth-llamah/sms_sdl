@@ -19,7 +19,7 @@ DEFINES   = -DLSB_FIRST -DALIGN_DWORD
 INCLUDES  = -I. -Ibase -Icpu -Isound -I/opt/mipsel-linux-uclibc/usr/include/SDL
 LIBS	  = -lSDL -lz -lm -lpthread #-lgcov
 
-OBJECTS   = main.o saves.o settingsdir.o sdlsms.o filters.o \
+OBJECTS   = main.o saves.o settingsdir.o sdlsms.o \
             base/render.o base/sms.o base/system.o base/vdp.o \
             cpu/z80.o sound/emu2413.o sound/sn76496.o
 
@@ -38,4 +38,4 @@ $(NAME): $(OBJECTS)
 	$(CC) -c $(CFLAGS) $(INCLUDES) $(DEFINES) $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(NAME)
+	rm -f $(OBJECTS) bin/$(NAME)

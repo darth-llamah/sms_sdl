@@ -26,7 +26,7 @@
 #include "SDL_thread.h"
 #include "shared.h"
 #include "saves.h"
-#include "filters.h"
+//#include "filters.h"
 #include "sdlsms.h"
 #include "bigfontwhite.h"
 #include "bigfontred.h"
@@ -51,7 +51,7 @@ static t_sdl_video sdl_video;
 static t_sdl_sound sdl_sound;
 static t_sdl_controls sdl_controls;
 static t_sdl_joystick sdl_joystick;
-static t_filterfunc filters[FILTER_NUM] = {
+/*static t_filterfunc filters[FILTER_NUM] = {
   filter_2xsai,
   filter_super2xsai,
   filter_supereagle,
@@ -60,7 +60,7 @@ static t_filterfunc filters[FILTER_NUM] = {
   filter_normal2x,
   filter_bilinear,
   filter_dotmatrix
-};
+};*/
 static int readvolume()
 {
 	char *mixer_device = "/dev/mixer";
@@ -303,14 +303,14 @@ else
         else
             gfx_font_print(TmpScreen,5,25,bigfontwhite,"Continue");
 
-
+/*
         sprintf(text,"Volume %d",volume);
 
         if (currentselection == 2)
             gfx_font_print(TmpScreen,5,45,bigfontred,text);
         else
             gfx_font_print(TmpScreen,5,45,bigfontwhite,text);
-
+*/
         sprintf(text,"Save State %d",sdl_controls.state_slot);
 
         if (currentselection == 3)
@@ -380,11 +380,13 @@ else
                 {
                     case SDLK_UP:
                         currentselection--;
+			if(currentselection == 2) currentselection--; 
                         if (currentselection == 0)
                             currentselection = 7;
                         break;
                     case SDLK_DOWN:
                         currentselection++;
+			if(currentselection == 2) currentselection++; 
                         if (currentselection == 8)
                             currentselection = 1;
                         break;
@@ -655,26 +657,7 @@ static void sdlsms_video_finish_update()
   }
   else {*/
  
- if(showfps)
-{
-sprintf(buf,"%d fps",fps);
-dest.x = 0;
-dest.y = 0;
-dest.w = gfx_font_width(font,buf);
-dest.h = gfx_font_height(font);
-//SDL_FillRect(sdl_video.surf_bitmap,&dest,0);
-if(IS_GG)
-	gfx_font_print(sdl_video.surf_bitmap,52,28,font,buf);
-else
-	gfx_font_print(sdl_video.surf_bitmap,23,4,font,buf);
-framecounter++;
-if (SDL_GetTicks() - time1 > 1000)
-{
-    fps=framecounter;
-    framecounter=0;
-    time1 = SDL_GetTicks();
-}
-}
+
 //sdlsms_video_blit_center(sdl_video.surf_screen, sdl_video.surf_bitmap);
 	SDL_LockSurface(sdl_video.surf_screen);
 	SDL_LockSurface(sdl_video.surf_bitmap);
@@ -702,6 +685,23 @@ if (SDL_GetTicks() - time1 > 1000)
 		}
 	SDL_UnlockSurface(sdl_video.surf_bitmap);
 	SDL_UnlockSurface(sdl_video.surf_screen);
+        if(showfps) {
+            sprintf(buf,"%d fps",fps);
+            dest.x = 8;
+            dest.y = 8;
+            dest.w = 36;
+            dest.h = 8;
+            SDL_FillRect(sdl_video.surf_screen, &dest, 0);
+
+            gfx_font_print(sdl_video.surf_screen, 8, 8, font, buf);
+            framecounter++;
+            if (SDL_GetTicks() - time1 > 1000)
+            {
+                fps=framecounter;
+                framecounter=0;
+                time1 = SDL_GetTicks();
+            }
+        } 
  // }
 }
 
@@ -864,7 +864,7 @@ static int sdlsms_controls_update(SDLKey k, int p)
     case SDLK_6:
     case SDLK_7:
     case SDLK_8:
-      /* only 'hot change' if started with a filter */
+      /* only 'hot change' if started with a filter *//*
       if(sdl_video.current_filter != -1) {
         int cur = k - SDLK_1;
         if(cur >= 0 && cur < FILTER_NUM) {
@@ -873,6 +873,7 @@ static int sdlsms_controls_update(SDLKey k, int p)
         }
       }
       break;
+*/
 	  case DINGOO_BUTTON_Y:
 		  sdlsms_video_take_screenshot();
 		  break;
