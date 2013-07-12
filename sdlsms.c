@@ -274,7 +274,6 @@ void menu()
     SDL_Event Event;
     SDL_Surface* miniscreen = SDL_CreateRGBSurface(SDL_SWSURFACE, miniscreenwidth, miniscreenheight, 16, sdl_video.surf_screen->format->Rmask, sdl_video.surf_screen->format->Gmask, sdl_video.surf_screen->format->Bmask, sdl_video.surf_screen->format->Amask);
     SDL_LockSurface(miniscreen);
-    SDL_LockSurface(sdl_video.surf_screen);
 if(IS_GG)
     bitmap_scale(104,28,160,144,miniscreenwidth,miniscreenheight,256,0,(uint16_t*)sdl_video.surf_bitmap,(uint16_t*)miniscreen->pixels);
 else
@@ -492,18 +491,16 @@ else
                     break;
             }
         }
-	SDL_BlitSurface(TmpScreen,NULL,sdl_video.surf_screen,NULL);
-	if(sdl_sync.sem_sync && sdl_video.frames_rendered % 3 == 0)
-		SDL_SemWait(sdl_sync.sem_sync);
-	SDL_Flip(sdl_video.surf_screen);
-	++sdl_video.frames_rendered;
+    SDL_BlitSurface(TmpScreen,NULL,sdl_video.surf_screen,NULL);
+    SDL_Flip(sdl_video.surf_screen);
+    SDL_Delay(4);
+
+        ++sdl_video.frames_rendered; 
     }
     if (currentselection == 7)
     {
         quit = 1;
     }
-    SDL_FreeSurface(miniscreen);
-    SDL_FreeSurface(TmpScreen);
 }
 
 
@@ -660,6 +657,7 @@ static void sdlsms_video_finish_update()
  
 
 //sdlsms_video_blit_center(sdl_video.surf_screen, sdl_video.surf_bitmap);
+	SDL_FillRect(sdl_video.surf_screen,NULL,0); //clear everything (menu screen leftovers)
 	SDL_LockSurface(sdl_video.surf_screen);
 	SDL_LockSurface(sdl_video.surf_bitmap);
         if (fullscreen == 1)
@@ -715,9 +713,9 @@ static void sdlsms_video_update()
     skip_current_frame = (sdl_video.frames_rendered % sdl_video.frame_skip == 0) ? 0 : 1;
 
   if(!skip_current_frame) {
-   // SDL_LockSurface(sdl_video.surf_screen);
+   //SDL_LockSurface(sdl_video.surf_screen);
     sms_frame(0);
-   // SDL_UnlockSurface(sdl_video.surf_screen);
+   //SDL_UnlockSurface(sdl_video.surf_screen);
     sdlsms_video_finish_update();
   }
   else 
