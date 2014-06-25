@@ -553,7 +553,7 @@ static void sdlsms_video_take_screenshot()
 static int sdlsms_video_init(int frameskip, int afullscreen, int filter)
 {
   int screen_width, screen_height;
-  Uint32 vidflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+  Uint32 vidflags = SDL_HWSURFACE | SDL_TRIPLEBUF;
   FILE *f;
   int vol;
   screen_width  = (IS_GG) ? GG_SCREEN_WIDTH  : SMS_SCREEN_WIDTH;
