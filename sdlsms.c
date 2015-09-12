@@ -885,6 +885,9 @@ static int sdlsms_controls_update(SDLKey k, int p)
 		  if(load_state(rom_filename, sdl_controls.state_slot))
 		    printf("[INFO] Loaded state from slot #%d.\n", sdl_controls.state_slot);
 		  break;
+	  case SDLK_HOME: //menu is now using SDKL_HOME
+			menu();
+			break;
     case SDLK_F4:
     case SDLK_F5:
       sdl_video.frame_skip += k == SDLK_F4 ? -1 : 1;
@@ -1212,7 +1215,7 @@ void sdlsms_emulate()
       }
     }
 
-    if(selectpressed && startpressed)
+/*    if(selectpressed && startpressed) //menu is now using SDKL_HOME
     {
 	menu();
 	input.system &= (IS_GG) ? ~INPUT_START : ~INPUT_PAUSE;
@@ -1221,7 +1224,7 @@ void sdlsms_emulate()
 	startpressed = 0;
 	SDL_FillRect(sdl_video.surf_screen,NULL,0);
     }     
-
+*/
     sdlsms_video_update();
     if(snd.enabled)
       sdlsms_sound_update();
